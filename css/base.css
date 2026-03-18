@@ -1,0 +1,37 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 20px;
+  font-size: 14px; font-weight: 500;
+  transform: translateY(80px); opacity: 0;
+  transition: all .25s; z-index: 9999;
+  display: flex; align-items: center; gap: 8px;
+}
+.toast.show    { transform: translateY(0); opacity: 1; }
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error   { border-left: 3px solid var(--red); }
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+.badge.green  { background: rgba(0,230,118,0.12);  color: var(--green); }
+.badge.red    { background: rgba(255,68,68,0.12);   color: var(--red); }
+.badge.yellow { background: rgba(255,202,40,0.12);  color: var(--yellow); }
+.badge.gray   { background: rgba(136,153,170,0.12); color: var(--text2); }
+.badge.blue   { background: rgba(0,212,255,0.12);   color: var(--accent); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text2); }
+.empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 15px; }

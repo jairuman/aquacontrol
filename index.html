@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaControl — Sistema de Pagos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  
+</head>
+<body>
+
+  <div class="mobile-topbar">
+    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+    <h2>💧 AquaControl</h2>
+    <button class="btn btn-primary btn-sm" onclick="openAddModal()" style="font-size:18px;padding:6px 10px;">＋</button>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-item active" id="mbnav-dashboard" onclick="showPage('dashboard');closeSidebar()">
+      <span class="mn-icon">📊</span>Dashboard
+    </div>
+    <div class="mobile-nav-item" id="mbnav-clients" onclick="showPage('clients');closeSidebar()">
+      <span class="mn-icon">👥</span>Clientes
+    </div>
+    <div class="mobile-nav-item" id="mbnav-deleted" onclick="showPage('deleted');closeSidebar()">
+      <span class="mn-icon">🗑️</span>Eliminados
+    </div>
+  </div>
+
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="drop">💧</div>
+        <h1>AquaControl</h1>
+        <p>Sistema de Gestión de Pagos de Agua</p>
+      </div>
+      <label>Usuario</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="off">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••">
+      <div class="login-error" id="login-error">❌ Usuario o contraseña incorrectos</div>
+      <button class="btn-login" onclick="doLogin()">Ingresar al sistema →</button>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <h2>💧 AquaControl</h2>
+        <span>Sistema de Pagos</span>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Principal</div>
+        <div class="nav-item active" onclick="showPage('dashboard');closeSidebar()">
+          <span class="icon">📊</span> Dashboard
+        </div>
+        <div class="nav-item" onclick="showPage('clients');closeSidebar()">
+          <span class="icon">👥</span> Clientes
+        </div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Registros</div>
+        <div class="nav-item" onclick="showPage('deleted');closeSidebar()">
+          <span class="icon">🗑️</span> Eliminados
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <button class="btn-logout" onclick="doLogout()">🚪 Cerrar sesión</button>
+      </div>
+    </div>
+
+    <div class="main">
+
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <h1>Dashboard</h1>
+            <p id="dash-date">Resumen general del sistema</p>
+          </div>
+          <button class="btn btn-primary" onclick="openAddModal()">＋ Nuevo Cliente</button>
+        </div>
+        <div class="stat-grid" id="stat-cards"></div>
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;">📋 Ranking de Deudas</div>
+            <div style="font-size:12px;color:var(--text2)">Ordenado de menor a mayor deuda</div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th class="col-hide-mobile">Código</th>
+                <th class="col-hide-mobile">DUI</th>
+                <th>Estado</th>
+                <th class="col-hide-mobile">Meses Pendientes</th>
+                <th>Deuda Total</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-clients">
+        <div class="page-header">
+          <div>
+            <h1>Clientes</h1>
+            <p>Administra todos los clientes registrados</p>
+          </div>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-secondary" onclick="exportExcel()">📥 Exportar Excel</button>
+            <button class="btn btn-secondary" onclick="triggerImport()">📤 Importar Excel</button>
+            <button class="btn btn-primary" onclick="openAddModal()">＋ Nuevo Cliente</button>
+          </div>
+          <!-- Input oculto para seleccionar archivo -->
+          <input type="file" id="import-file-input" accept=".xlsx,.xls" style="display:none" onchange="handleImport(event)">
+
+        </div>
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-input" placeholder="Buscar por nombre, código o DUI..." oninput="renderClientsTable()">
+            </div>
+            <select id="filter-status" onchange="renderClientsTable()">
+              <option value="">Todos</option>
+              <option value="activo">Activos</option>
+              <option value="inactivo">Inactivos</option>
+            </select>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th class="col-hide-mobile">Código</th>
+                <th>Nombre</th>
+                <th class="col-hide-mobile">DUI</th>
+                <th class="col-hide-mobile">Teléfono</th>
+                <th>Estado</th>
+                <th>Deuda</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="clients-table"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-client-detail">
+        <div class="back-btn" onclick="showPage('clients')">← Volver a Clientes</div>
+        <div id="client-detail-content"></div>
+      </div>
+
+      <div class="page" id="page-deleted">
+        <div class="page-header">
+          <div>
+            <h1>Clientes Eliminados</h1>
+            <p>Historial de registros eliminados del sistema</p>
+          </div>
+        </div>
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="search-deleted" placeholder="Buscar por nombre o DUI..." oninput="renderDeletedTable()">
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Código</th>
+              <th>DUI</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
+              <th>Deuda al eliminar</th>
+              <th>Fecha eliminación</th>
+              <th>Se borra en</th>
+            </tr>
+          </thead>
+          <tbody id="deleted-table"></tbody>
+        </table>
+      </div>
+</div>
+
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-client">
+    <div class="modal">
+      <h2 id="modal-title">Nuevo Cliente</h2>
+      <input type="hidden" id="edit-id">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre Completo *</label>
+          <input type="text" id="f-name" placeholder="Juan Pérez García">
+        </div>
+        <div class="form-group">
+          <label>Código de Cliente</label>
+          <input type="text" id="f-code" placeholder="AUTO" readonly style="opacity:0.6">
+        </div>
+        <div class="form-group">
+          <label>DUI</label>
+          <input type="text" id="f-dui" placeholder="00000000-0" maxlength="10">
+        </div>
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" id="f-phone" placeholder="7777-8888">
+        </div>
+        <div class="form-group full">
+          <label>Dirección</label>
+          <input type="text" id="f-address" placeholder="Colonia, Municipio, Departamento">
+        </div>
+        <div class="form-group">
+          <label>Cuota Mensual ($)</label>
+          <input type="number" id="f-fee" value="10" min="1">
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="f-status">
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de Registro</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="form-group">
+          <label>Número de Medidor</label>
+          <input type="text" id="f-meter" placeholder="M-0000">
+        </div>
+        <div class="form-group full">
+          <label>Observaciones</label>
+          <textarea id="f-notes" rows="2" placeholder="Notas adicionales..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-client')">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveClient()">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-payment">
+    <div class="modal" style="width:420px">
+      <h2>Registrar Pago</h2>
+      <input type="hidden" id="pay-client-id">
+      <div class="pay-amount-display">
+        <div class="label">Deuda actual</div>
+        <div class="total" id="pay-debt-display">$0.00</div>
+        <div class="label" id="pay-months-display"></div>
+      </div>
+      <div class="form-group">
+        <label>Monto a pagar ($) — pagar de más cubre meses futuros</label>
+        <input type="number" id="pay-amount" placeholder="0.00" min="0.01" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>Fecha de Pago</label>
+        <input type="date" id="pay-date">
+      </div>
+      <div class="form-group">
+        <label>Nota (opcional)</label>
+        <input type="text" id="pay-note" placeholder="Referencia de pago...">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modal-payment')">Cancelar</button>
+        <button class="btn btn-success" onclick="savePayment()">✅ Registrar Pago</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal confirm-modal">
+      <h2>⚠️ Confirmar</h2>
+      <p id="confirm-msg">¿Estás seguro de eliminar este cliente? Sus datos pasarán a la tabla de eliminados.</p>
+      <div class="modal-footer" style="justify-content:center">
+        <button class="btn btn-secondary" onclick="closeModal('modal-confirm')">Cancelar</button>
+        <button class="btn btn-danger" id="confirm-ok-btn">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Firebase SDK -->
+  <!-- Librerías externas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <!-- App -->
+  <script src="js/db.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/debt.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/clients.js"></script>
+  <script src="js/payments.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Modal Importar Duplicados -->
+<div class="modal-overlay" id="modal-import-duplicates">
+  <div class="modal confirm-modal">
+    <h2>⚠️ Clientes duplicados</h2>
+    <p>Los siguientes clientes ya existen en el sistema:</p>
+    <p id="import-dup-list" style="color:var(--accent);font-weight:600;margin:12px 0;font-size:13px"></p>
+    <p>¿Qué deseas hacer con ellos?</p>
+    <div class="modal-footer" style="justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px">
+      <button class="btn btn-secondary" onclick="closeModal('modal-import-duplicates')">Cancelar</button>
+      <button class="btn btn-danger"    onclick="importSkipDuplicates()">Ignorar duplicados</button>
+      <button class="btn btn-primary"   onclick="importUpdateDuplicates()">Actualizar duplicados</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

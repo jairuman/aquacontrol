@@ -1,0 +1,90 @@
+.btn {
+  padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; display: inline-flex; align-items: center;
+  gap: 6px; transition: all .15s;
+}
+.btn-primary          { background: var(--accent); color: #000; }
+.btn-primary:hover    { background: var(--accent2); }
+.btn-secondary        { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover  { border-color: var(--accent); color: var(--accent); }
+.btn-danger           { background: rgba(255,68,68,0.12); color: var(--red); border: 1px solid rgba(255,68,68,0.2); }
+.btn-danger:hover     { background: rgba(255,68,68,0.2); }
+.btn-success          { background: rgba(0,230,118,0.12); color: var(--green); border: 1px solid rgba(0,230,118,0.2); }
+.btn-success:hover    { background: rgba(0,230,118,0.2); }
+.btn-sm   { padding: 5px 12px; font-size: 12px; }
+.btn-icon { padding: 7px; }
+.actions  { display: flex; gap: 6px; align-items: center; }
+
+.table-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.table-toolbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+}
+.search-box {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 14px;
+}
+.search-box input { background: none; border: none; outline: none; color: var(--text); font-size: 14px; width: 100%; }
+.search-box .search-icon { color: var(--text2); font-size: 14px; }
+#filter-status {
+  padding: 8px 12px; background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 8px; color: var(--text); outline: none;
+}
+#filter-status option { background: var(--surface2); }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 700;
+  color: var(--text2); text-transform: uppercase; letter-spacing: 1px;
+  background: var(--surface2); border-bottom: 1px solid var(--border);
+}
+tbody tr { border-bottom: 1px solid rgba(42,58,86,0.5); cursor: pointer; transition: background .12s; }
+tbody tr:hover      { background: var(--surface2); }
+tbody tr:last-child { border-bottom: none; }
+td { padding: 14px 16px; font-size: 14px; }
+
+.debt-rank     { display: flex; align-items: center; gap: 8px; }
+.debt-bar-wrap { flex: 1; height: 4px; background: var(--surface3); border-radius: 2px; }
+.debt-bar      { height: 100%; border-radius: 2px; }
+
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500; opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 32px; width: 560px; max-height: 90vh;
+  overflow-y: auto; transform: translateY(20px); transition: transform .2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+.modal h2 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; margin-bottom: 24px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+.form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-group { margin-bottom: 16px; }
+.form-group.full { grid-column: 1/-1; }
+.form-group label {
+  display: block; font-size: 12px; font-weight: 600; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%; padding: 10px 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 14px;
+  outline: none; transition: border-color .15s; font-family: 'Inter', sans-serif;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--accent); }
+.form-group select option { background: var(--surface2); }
+
+.confirm-modal { width: 380px; text-align: center; }
+.confirm-modal p { color: var(--text2); font-size: 14px; margin-bottom: 24px; }

@@ -1,0 +1,69 @@
+.client-header-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px;
+  display: flex; align-items: center; gap: 20px; margin-bottom: 20px;
+}
+.client-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800; color: #000; flex-shrink: 0;
+}
+.client-info h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; }
+.client-info .meta { display: flex; gap: 16px; margin-top: 6px; flex-wrap: wrap; }
+.client-info .meta span { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 4px; }
+
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.three-col { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+.section-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.section-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.section-header h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; }
+.data-list { padding: 16px 20px; }
+.data-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(42,58,86,0.4); }
+.data-item:last-child { border-bottom: none; }
+.data-item .key { font-size: 13px; color: var(--text2); }
+.data-item .val { font-size: 13px; font-weight: 500; }
+
+.payment-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; border-bottom: 1px solid rgba(42,58,86,0.4);
+}
+.payment-row:last-child { border-bottom: none; }
+.payment-row .date   { font-size: 12px; color: var(--text2); }
+.payment-row .amount { font-weight: 700; color: var(--green); }
+
+.month-grid { padding: 16px 20px; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.month-cell { border-radius: 8px; padding: 10px; text-align: center; font-size: 12px; border: 1px solid var(--border); }
+.month-cell .m-name   { font-weight: 600; color: var(--text2); font-size: 11px; }
+.month-cell .m-status { font-size: 18px; margin-top: 4px; }
+.month-cell .m-amount { font-size: 11px; margin-top: 2px; }
+.month-cell.paid   { background: rgba(0,230,118,0.08);  border-color: rgba(0,230,118,0.2); }
+.month-cell.unpaid { background: rgba(255,68,68,0.06);  border-color: rgba(255,68,68,0.15); }
+.month-cell.future { background: rgba(42,58,86,0.3); border-color: var(--border); opacity: 0.5; }
+
+.debt-summary { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.debt-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; flex: 1; min-width: 120px;
+}
+.debt-card .dc-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+.debt-card .dc-value { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; margin-top: 4px; }
+
+.pay-amount-display {
+  background: var(--surface2); border-radius: 12px; padding: 20px;
+  text-align: center; margin-bottom: 16px;
+}
+.pay-amount-display .total { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--red); }
+.pay-amount-display .label { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text2); font-size: 14px; cursor: pointer;
+  margin-bottom: 20px; transition: color .15s;
+}
+.back-btn:hover { color: var(--accent); }
+.deleted-row { opacity: 0.75; }
